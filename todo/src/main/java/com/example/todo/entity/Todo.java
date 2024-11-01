@@ -1,6 +1,7 @@
 package com.example.todo.entity;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @SequenceGenerator(name = "todo_seq_gen", sequenceName = "todo_seq", allocationSize = 1)
+@DynamicInsert // default 값 동작
 @Entity(name = "todotbl")
 public class Todo {
 
@@ -26,9 +28,11 @@ public class Todo {
     @Id
     private Long id;
 
+    @Column(nullable = false)
     @ColumnDefault("0")
     private Boolean completed;
 
+    @Column(nullable = false)
     @ColumnDefault("0")
     private Boolean important;
 
