@@ -23,9 +23,9 @@ public class TodoRepositoryTest {
                             .title("할 일" + i)
                             .build();
 
-                    todoRepository.save(todo);
+                    // 새로 삽입된 return
+                    System.out.println(todoRepository.save(todo));
                 });
-
     }
 
     @Test

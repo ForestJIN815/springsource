@@ -6,18 +6,23 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.example.mart.entity.constant.DeliveryStatus;
 import com.example.mart.entity.constant.OrderStatus;
+import com.example.mart.entity.item.Delivery;
 import com.example.mart.entity.item.Item;
 import com.example.mart.entity.item.Member;
 import com.example.mart.entity.item.Order;
 import com.example.mart.entity.item.OrderItem;
+import com.example.mart.entity.product.Album;
+import com.example.mart.entity.product.Book;
+import com.example.mart.entity.product.Movie;
+import com.example.mart.repository.item.DeliveryRepository;
 import com.example.mart.repository.item.ItemRepository;
 import com.example.mart.repository.item.MemberRepository;
 import com.example.mart.repository.item.OrderItemRepository;
 import com.example.mart.repository.item.OrderRepository;
 
 import jakarta.transaction.Transactional;
-import oracle.net.aso.m;
 
 @SpringBootTest
 public class MartRepositoryTest {
@@ -34,6 +39,9 @@ public class MartRepositoryTest {
     @Autowired
     private ItemRepository itemRepository;
 
+    @Autowired
+    private DeliveryRepository deliveryRepository;
+
     // C
     @Test
     public void memberInsertTest() {
@@ -44,9 +52,33 @@ public class MartRepositoryTest {
 
     @Test
     public void itemInsertTest() {
-        itemRepository.save(Item.builder().name("tshirt").price(25300).quantity(15).build());
-        itemRepository.save(Item.builder().name("shoes").price(101300).quantity(20).build());
-        itemRepository.save(Item.builder().name("pants").price(45000).quantity(10).build());
+        // itemRepository.save(Item.builder().name("tshirt").price(25300).quantity(15).build());
+        // itemRepository.save(Item.builder().name("shoes").price(101300).quantity(20).build());
+        // itemRepository.save(Item.builder().name("pants").price(45000).quantity(10).build());
+
+        Album album = new Album();
+        album.setArtist("로제");
+        album.setName("아파트");
+        album.setPrice(15200);
+        album.setQuantity(15);
+        itemRepository.save(album);
+
+        Book book = new Book();
+        book.setAuthor("한강");
+        book.setIsbn("122ㄱ");
+        book.setName("소년이 온다");
+        book.setPrice(10800);
+        book.setQuantity(15);
+        itemRepository.save(book);
+
+        Movie movie = new Movie();
+        movie.setActor("폴 메스칼");
+        movie.setDirector("리들리 스콧");
+        movie.setName("글래디에이터2");
+        movie.setPrice(25000);
+        movie.setQuantity(300);
+        itemRepository.save(movie);
+
     }
 
     @Test
@@ -177,4 +209,42 @@ public class MartRepositoryTest {
         member.getOrders().forEach(order -> System.out.println(order));
     }
 
+    // 일대일
+
+    @Test
+    public void testDeliveryInsert() {
+
+        // 배송 정보 입력
+        Delivery delivery = Delivery.builder()
+                .city("서울시")
+                .street("동소문로1가")
+                .zipcode("11051")
+                .deliveryStatus(DeliveryStatus.READY)
+                .build();
+
+        deliveryRepository.save(delivery);
+
+        // order 와 배송정보 연결
+        Order order = orderRepository.findById(2L).get();
+        order.setDelivery(delivery);
+        orderRepository.save(order);
+    }
+
+    @Test
+    public void testOrderRead() {
+        // order 조회 (+ 배송정보)
+        Order order = orderRepository.findById(2L).get();
+        System.out.println(order);
+
+        System.out.println(order.getDelivery());
+    }
+
+    // 양방향(배송 => 주문)
+    @Test
+    public void testDeliveryRead() {
+        // 배송정보 조회 (+ order)
+        Delivery delivery = deliveryRepository.findById(1L).get();
+        System.out.println(delivery);
+        System.out.println(delivery.getOrder());
+    }
 }
