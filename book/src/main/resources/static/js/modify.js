@@ -8,3 +8,18 @@ document.querySelector(".btn-danger").addEventListener("click", (e) => {
     actionForm.submit();
   }
 });
+
+document.querySelector(".btn-secondary").addEventListener("click", (e) => {
+  // 목록 클릭 시 a 태그 기능 중지
+  e.preventDefault();
+
+  // actionForm 에서 id 요소 제거하기
+  actionForm.querySelector("[name='id']").remove();
+  // actionForm method는 get 변경하기
+  actionForm.method = "get";
+  // actionForm acion은 list 변경하기
+  actionForm.action = "/book/list";
+
+  // actionForm submit()
+  actionForm.submit();
+});

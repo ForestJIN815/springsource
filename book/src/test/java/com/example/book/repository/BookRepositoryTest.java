@@ -5,6 +5,10 @@ import java.util.stream.IntStream;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import com.example.book.entity.Book;
 import com.example.book.entity.Category;
@@ -55,7 +59,7 @@ public class BookRepositoryTest {
     public void testBookInsert() {
 
         // 10권
-        IntStream.rangeClosed(1, 10).forEach(i -> {
+        IntStream.rangeClosed(1, 100).forEach(i -> {
             // 무작위로 publisher, category 지정에 사용
             long num = (int) (Math.random() * 5) + 1;
 
@@ -105,5 +109,34 @@ public class BookRepositoryTest {
     @Test
     public void testDelete() {
         bookRepository.deleteById(10L);
+    }
+
+    // 페이지 나누기
+    @Test
+    public void testPage() {
+        // Pageable : 스프링 부트에서 제공하는 페이지 처리 객체
+
+        // 1page / 20개 최신 도서정보
+        // Pageable pageable = PageRequest.of(0, 0, Direction.DESC);
+        Pageable pageable = PageRequest.of(0, 20, Sort.by("id").descending());
+        Page<Book> result = bookRepository.findAll(bookRepository.makePredicate(null, null), pageable);
+
+        System.out.println("TotalElements " + result.getTotalElements());
+        System.out.println("TotalPages " + result.getTotalPages());
+        result.getContent().forEach(book -> System.out.println(book));
+    }
+
+    @Test
+    public void testSearchPage() {
+        // Pageable : 스프링 부트에서 제공하는 페이지 처리 객체
+
+        // 1page / 20개 최신 도서정보
+        // Pageable pageable = PageRequest.of(0, 0, Direction.DESC);
+        Pageable pageable = PageRequest.of(0, 20, Sort.by("id").descending());
+        Page<Book> result = bookRepository.findAll(bookRepository.makePredicate("c", "건강"), pageable);
+
+        System.out.println("TotalElements " + result.getTotalElements());
+        System.out.println("TotalPages " + result.getTotalPages());
+        result.getContent().forEach(book -> System.out.println(book));
     }
 }

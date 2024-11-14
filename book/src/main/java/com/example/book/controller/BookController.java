@@ -15,7 +15,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.book.dto.BookDto;
 import com.example.book.dto.CategoryDto;
+import com.example.book.dto.PageRequestDto;
+import com.example.book.dto.PageResultDto;
 import com.example.book.dto.PublisherDto;
+import com.example.book.entity.Book;
 import com.example.book.entity.Publisher;
 import com.example.book.service.BookService;
 
@@ -47,16 +50,17 @@ public class BookController {
 
     // 리스트 추출
     @GetMapping("/list")
-    public void getHome(Model model) {
-        log.info("도서 전체 목록 요청");
+    public void getList(@ModelAttribute("requestDto") PageRequestDto requestDto, Model model) {
+        log.info("도서 전체 목록 요청 {}", requestDto);
 
-        List<BookDto> list = bookService.getList();
-        model.addAttribute("list", list);
+        PageResultDto<BookDto, Book> result = bookService.getList(requestDto);
+        model.addAttribute("result", result);
     }
 
     // 상세조회
     @GetMapping(value = { "/read", "/modify" })
-    public void getMethodName(@RequestParam Long id, Model model) {
+    public void getMethodName(@RequestParam Long id, @ModelAttribute("requestDto") PageRequestDto requestDto,
+            Model model) {
         log.info("도서 상세 요청 {}", id);
 
         BookDto dto = bookService.getRow(id);
@@ -64,20 +68,34 @@ public class BookController {
     }
 
     @PostMapping("/modify")
-    public String postModify(BookDto dto, RedirectAttributes rttr) {
+    public String postModify(BookDto dto, @ModelAttribute("requestDto") PageRequestDto requestDto,
+            RedirectAttributes rttr) {
         log.info("도서 수정 요청 {}", dto);
+        log.info("requestDto {}", requestDto);
 
         Long id = bookService.update(dto);
 
         // 상세조회로 이동
         rttr.addAttribute("id", id); // ?id=3
+        rttr.addAttribute("page", requestDto.getPage());
+        rttr.addAttribute("size", requestDto.getSize());
+        rttr.addAttribute("type", requestDto.getType());
+        rttr.addAttribute("keyword", requestDto.getKeyword());
         return "redirect:read";
     }
 
     @PostMapping("/remove")
-    public String postMethodName(Long id) {
+    public String postMethodName(Long id, @ModelAttribute("requestDto") PageRequestDto requestDto,
+            RedirectAttributes rttr) {
         log.info("도서 삭제 요청 {}", id);
+        log.info("requestDto {}", requestDto);
+
         bookService.delete(id);
+
+        rttr.addAttribute("page", requestDto.getPage());
+        rttr.addAttribute("size", requestDto.getSize());
+        rttr.addAttribute("type", requestDto.getType());
+        rttr.addAttribute("keyword", requestDto.getKeyword());
 
         return "redirect:list";
     }
