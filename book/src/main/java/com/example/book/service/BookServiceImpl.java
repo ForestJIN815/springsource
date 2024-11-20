@@ -54,7 +54,7 @@ public class BookServiceImpl implements BookService {
         // return result.stream().map(entity ->
         // entityToDto(entity)).collect(Collectors.toList());
 
-        // 페이지 나누기 개념 + 검색 개념 추가
+        // 페이지 나누기 + 검색 개념 추가
         Pageable pageable = requestDto.getPageable(Sort.by("id").descending());
         Page<Book> result = bookRepository
                 .findAll(bookRepository.makePredicate(requestDto.getType(), requestDto.getKeyword()), pageable);

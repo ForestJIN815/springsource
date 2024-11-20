@@ -10,13 +10,12 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Builder
 @Setter
+@Builder
 @Getter
 public class CategoryDto {
 
     private Long id;
 
     private String categoryName;
-
 }

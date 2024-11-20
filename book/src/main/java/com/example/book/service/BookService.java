@@ -10,7 +10,6 @@ import com.example.book.dto.PublisherDto;
 import com.example.book.entity.Book;
 import com.example.book.entity.Category;
 import com.example.book.entity.Publisher;
-import com.example.book.repository.PublisherRepository;
 
 public interface BookService {
 
@@ -82,5 +81,4 @@ public interface BookService {
                 .publisher(Publisher.builder().id(Long.parseLong(dto.getPublisherName())).build())
                 .build();
     }
-
 }

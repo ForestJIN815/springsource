@@ -10,13 +10,12 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Builder
 @Setter
+@Builder
 @Getter
 public class PublisherDto {
 
     private Long id;
 
     private String publisherName;
-
 }

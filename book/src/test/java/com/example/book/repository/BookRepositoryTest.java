@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 
 import com.example.book.entity.Book;
 import com.example.book.entity.Category;
@@ -32,7 +33,8 @@ public class BookRepositoryTest {
         categoryRepository.findAll().forEach(c -> System.out.println(c));
 
         // publisher 목록
-        categoryRepository.findAll().forEach(p -> System.out.println(p));
+        publisherRepository.findAll().forEach(p -> System.out.println(p));
+
     }
 
     @Test

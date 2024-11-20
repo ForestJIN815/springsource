@@ -17,7 +17,7 @@ document.querySelector(".btn-secondary").addEventListener("click", (e) => {
   actionForm.querySelector("[name='id']").remove();
   // actionForm method는 get 변경하기
   actionForm.method = "get";
-  // actionForm acion은 list 변경하기
+  // actionForm action은 list 변경하기
   actionForm.action = "/book/list";
 
   // actionForm submit()

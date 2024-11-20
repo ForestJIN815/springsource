@@ -30,7 +30,7 @@
         </li>
       </ul>
       <form class="d-flex" role="search" th:action="@{list}">
-        <!-- 검색 후 처음에 띄울 페이지는 1 page 임 -->
+        <!-- 검색 후 처음에 띄울 페이지는 1 page 임-->
         <input type="hidden" name="page" value="1" />
         <input type="hidden" name="size" th:value="${requestDto.size}" />
         <select name="type" id="type" class="form-select me-2">

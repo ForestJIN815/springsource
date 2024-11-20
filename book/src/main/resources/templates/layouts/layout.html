@@ -1,10 +1,5 @@
 <!DOCTYPE html>
-<html
-  lang="en"
-  data-bs-theme="auto"
-  xmlns:th="http://www.thymeleaf.org"
-  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
->
+<html lang="en" data-bs-theme="auto">
   <head>
     <script th:src="@{/assets/js/color-modes.js}"></script>
 
@@ -16,7 +11,7 @@
       content="Mark Otto, Jacob Thornton, and Bootstrap contributors"
     />
     <meta name="generator" content="Hugo 0.122.0" />
-    <title>Memo</title>
+    <title>Book</title>
 
     <link
       rel="canonical"
@@ -123,7 +118,7 @@
     <!--nav 영역-->
     <div th:replace="~{/fragments/nav::nav}"></div>
 
-    <main class="container" layout:fragment="content">
+    <main class="container mt-3" layout:fragment="content">
       <!-- 개별 페이지 content 영역 -->
     </main>
     <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"></script>

@@ -1,9 +1,12 @@
 package com.example.board.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import com.example.board.entity.Board;
 import com.example.board.entity.Reply;
 
 public interface ReplyRepository extends JpaRepository<Reply, Long> {
@@ -12,4 +15,7 @@ public interface ReplyRepository extends JpaRepository<Reply, Long> {
     @Modifying
     @Query("DELETE FROM Reply r WHERE r.board.bno = :bno")
     void deleteByBno(Long bno);
+
+    // 특정 bno의 댓글 추출
+    List<Reply> findByBoardOrderByRno(Board board);
 }

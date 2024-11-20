@@ -14,8 +14,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Builder
 @Setter
+@Builder
 @Getter
 public class BookDto {
     private Long id;

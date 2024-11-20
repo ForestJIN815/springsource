@@ -19,13 +19,12 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(exclude = { "category", "publisher" })
-@Builder
 @Setter
+@Builder
 @Getter
 @Table(name = "booktbl")
 @Entity
 public class Book extends BaseEntity {
-    // id, 제목, 저자, 출판일, 가격, 할인가격
 
     @SequenceGenerator(name = "book_seq_gen", sequenceName = "book_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_seq_gen")

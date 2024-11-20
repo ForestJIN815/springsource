@@ -7,6 +7,7 @@ import jakarta.persistence.SequenceGenerator;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -47,6 +48,6 @@ public class Board extends BaseEntity {
     private Member writer;
 
     @Builder.Default
-    @OneToMany(mappedBy = "board") // 기본 Fetch 전략이 LAZY 임
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE) // 기본 Fetch 전략이 LAZY 임
     private List<Reply> replies = new ArrayList<>();
 }
