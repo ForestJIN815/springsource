@@ -3,11 +3,21 @@
   <div layout:fragment="content">
     <h2>Board Create</h2>
 
-    <form action="" method="post" th:object="${dto}">
+    <form th:action="@{/board/create}" method="post" th:object="${dto}">
       <div class="mb-3">
         <label for="title">Title</label>
-        <input type="text" name="title" id="title" class="form-control" th:value="${dto.title}" />
-        <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="text-danger"></div>
+        <input
+          type="text"
+          name="title"
+          id="title"
+          class="form-control"
+          th:value="${dto.title}"
+        />
+        <div
+          th:if="${#fields.hasErrors('title')}"
+          th:errors="*{title}"
+          class="text-danger"
+        ></div>
       </div>
       <div class="mb-3">
         <label for="content">Content</label>
@@ -28,10 +38,11 @@
         <label for="writer">Writer</label>
         <input
           type="text"
-          name="writerEmail"
-          id="writerEmail"
+          name="name"
+          id="name"
           class="form-control"
-          th:value="${dto.writerEmail}"
+          readonly
+          th:value="${#authentication.principal.memberDto.name}"
         />
         <div
           th:if="${#fields.hasErrors('writerEmail')}"
@@ -39,6 +50,11 @@
           class="text-danger"
         ></div>
       </div>
+      <input
+        type="hidden"
+        name="writerEmail"
+        th:value="${#authentication.principal.username}"
+      />
       <button class="btn btn-primary" type="submit">등록</button>
       <button class="btn btn-info" type="button">목록</button>
     </form>

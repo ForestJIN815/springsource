@@ -58,7 +58,9 @@
         readonly
       />
     </div>
+    <!-- 로그인 사용자 == 글작성자 -->
     <a
+      th:if="${#authentication.name == dto.writerEmail}"
       th:href="@{modify(bno=${dto.bno},page=${requestDto.page},size=${requestDto.size},type=${requestDto.type},keyword=${requestDto.keyword})}"
       class="btn btn-primary"
       >Modify</a
@@ -71,16 +73,17 @@
     <!-- 댓글 폼 영역 -->
     <div class="mt-5">
       <hr />
-      <div class="border p-4">
-        <form action="" method="post" id="replyForm">
+      <div class="border p-4" sec:authorize="isAuthenticated()">
+        <form th:action="@{/replies/new}" method="post" id="replyForm">
           <input type="hidden" name="rno" value="" id="rno" />
           <div class="input-group mb-3">
             <span class="input-group-text">작성자</span>
             <input
               type="text"
-              name="replyer"
-              id="replyer"
+              name="replyerName"
+              id="replyerName"
               class="form-control"
+              th:value="${#authentication.principal.memberDto.name}"
             />
           </div>
           <div class="input-group mb-3">
@@ -95,6 +98,12 @@
               등록
             </button>
           </div>
+          <input
+            type="hidden"
+            name="replyerEmail"
+            th:value="${#authentication.name}"
+            id="replyerEmail"
+          />
         </form>
       </div>
     </div>
@@ -107,41 +116,41 @@
 
       <div class="list-group reply-list">
         <!--
-    <div class="d-flex justify-content-between my-2 border-bottom reply-row" data-rno="">
-      <div class="p-3">
-        <img src="" alt="" class="rounded-circle mx-auto d-block" />
-      </div>
-      <div class="flex-grow-1 align-self-center">
-        <span>
-          작성자명
-        </span>
-        <div>
-          <span class="fs-5">
-            댓글 내용
-          </span>
+        <div
+          class="d-flex justify-content-between my-2 border-bottom reply-row"
+          data-rno=""
+        >
+          <div class="p-3">
+            <img src="" alt="" class="rounded-circle mx-auto d-block" />
+          </div>
+          <div class="flex-grow-1 align-self-center">
+            <span> 작성자명 </span>
+            <div>
+              <span class="fs-5"> 댓글 내용 </span>
+            </div>
+            <div class="text-muted">
+              <span class="small"> 작성 날짜 </span>
+            </div>
+          </div>
+          <div class="d-flex flex-column align-self-center">
+            <div class="mb-2">
+              <button class="btn btn-outline-danger btn-sm">삭제</button>
+            </div>
+            <div>
+              <button class="btn btn-outline-success btn-sm">수정</button>
+            </div>
+          </div>
         </div>
-        <div class="text-muted">
-          <span class="small">
-            작성 날짜
-          </span>
-        </div>
-      </div>
-      <div class="d-flex flex-column align-self-center">
-        <div class="mb-2">
-          <button class="btn btn-outline-danger btn-sm">삭제</button>
-        </div>
-        <div>
-          <button class="btn btn-outline-success btn-sm">수정</button>
-        </div>
-      </div>
-    </div>
-  -->
-      </div>
+      --></div>
     </div>
   </div>
   <th:block layout:fragment="script">
     <script>
       const bno = "[[${dto.bno}]]";
+      // csrf 생성
+      const csrfValue = "[[${_csrf.token}]]";
+      // 현재 로그인 사용자의 이메일
+      const loginEmail = "[[${#authentication.name}]]";
     </script>
     <script th:src="@{/js/read.js}"></script>
   </th:block>
