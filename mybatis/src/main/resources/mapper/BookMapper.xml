@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.example.mybatis.mapper.BookMapper">  
+
+<select id="categories" resultType="com.example.mybatis.dto.CategoryDto">
+    select c.category_id as id, c.category_name 
+    from CATEGORY c
+  </select>
+
+<select id="publisher" resultType="com.example.mybatis.dto.PublisherDto">
+    select p.publisher_id as id, p.publisher_name
+    from PUBLISHER p
+  </select>
+
+
+<insert id="create">
+    INSERT INTO BOOKTBL(book_id,title,writer,price,sale_price,created_date_time,last_modified_date_time, CATEGORY_CATEGORY_ID, PUBLISHER_PUBLISHER_ID)
+    VALUES(book_seq.nextval, #{title}, #{writer}, #{price}, #{salePrice}, current_timestamp, current_timestamp, #{categoryName}, #{publisherName})
+</insert>
+
+<delete id="delete">
+    DELETE FROM booktbl
+    WHERE book_id = #{id}
+</delete>
+
+
+  <select id="read" resultType="com.example.mybatis.dto.BookDto">
+    select b.book_id as id, b.title, b.writer, b.price, b.sale_price, b.created_date_time, p.publisher_id, p.publisher_name, c.category_id, c.category_name 
+    from booktbl b 
+        JOIN PUBLISHER p ON b.PUBLISHER_PUBLISHER_ID = p.PUBLISHER_ID
+        JOIN CATEGORY c ON b.CATEGORY_CATEGORY_ID = c.CATEGORY_ID
+    where b.book_id = #{id}
+  </select>
+
+  <select id="listAll" resultType="com.example.mybatis.dto.BookDto">
+    
+    <![CDATA[
+        SELECT t.book_id as id, t.title, t.writer, t.publisher_id, t.publisher_name, t.category_id, t.category_name
+        FROM (  SELECT
+                    rownum rn,
+                    b1.*
+                FROM
+                    (
+                    SELECT
+                        *
+                    FROM
+                        BOOKTBL b
+                    JOIN PUBLISHER p ON
+                        b.PUBLISHER_PUBLISHER_ID = p.PUBLISHER_ID
+                    JOIN CATEGORY c ON
+                        b.CATEGORY_CATEGORY_ID = c.CATEGORY_ID
+                    WHERE
+                        b.BOOK_ID > 0
+                    ORDER BY
+                        b.BOOK_ID DESC) b1
+                WHERE
+    ]]>
+        <include refid="criteria"></include>
+    <![CDATA[
+                rownum <= (#{page} * #{size})) t
+            WHERE
+                rn > (#{page} - 1) * #{size}            
+    ]]>
+  </select>
+
+  <select id="totalCnt" resultType="int">
+    SELECT count(*) 
+    FROM booktbl b
+                JOIN PUBLISHER p ON b.PUBLISHER_PUBLISHER_ID = p.PUBLISHER_ID
+                JOIN CATEGORY c ON b.CATEGORY_CATEGORY_ID = c.CATEGORY_ID
+    WHERE 
+        <include refid="criteria"></include> 
+        book_id > 0
+  </select>
+
+  <sql id="criteria">
+    <trim prefix="("  suffix=") AND"  prefixOverrides="OR">
+        <trim prefix="OR">
+            <choose>
+                <when test="type == 't'.toString()">
+                    title like '%'||#{keyword}||'%'
+                </when>
+                <when test="type == 'c'.toString()">
+                    CATEGORY_NAME like '%'||#{keyword}||'%'
+                </when>
+                  <when test="type == 'w'.toString()">
+                    writer like '%'||#{keyword}||'%'
+                </when>
+            </choose>
+        </trim>
+    </trim>
+  </sql>
+
+</mapper>

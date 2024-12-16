@@ -13,7 +13,6 @@ import com.example.movie.dto.AuthMemberDto;
 import com.example.movie.dto.MemberDto;
 import com.example.movie.dto.PasswordDto;
 import com.example.movie.entity.Member;
-import com.example.movie.entity.constant.MemberRole;
 import com.example.movie.repository.MemberRepository;
 import com.example.movie.repository.ReviewRepository;
 

@@ -1,7 +1,5 @@
 package com.example.movie.service;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import com.example.movie.dto.MemberDto;
 import com.example.movie.dto.PasswordDto;
 import com.example.movie.entity.Member;

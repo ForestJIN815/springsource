@@ -10,6 +10,7 @@ import com.example.movie.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,8 +38,9 @@ public class ReviewController {
     }
 
     // ~~~/reviews/mno/reviewno + @DeleteMapping
+    @PreAuthorize("authentication.name == #email")
     @DeleteMapping("/{mno}/{reviewNo}")
-    public Long deteteReview(@PathVariable Long reviewNo) {
+    public Long deteteReview(@PathVariable Long reviewNo, String email) {
         log.info("리뷰 삭제 {}", reviewNo);
 
         reviewService.removeReview(reviewNo);
@@ -55,6 +57,7 @@ public class ReviewController {
     }
 
     // ~~/reviews/mno/reviewno + @PutMapping + ReviewDto
+    @PreAuthorize("authentication.name == #reviewDto.email")
     @PutMapping("/{mno}/{reviewNo}")
     public Long putReview(@PathVariable Long reviewNo, @RequestBody ReviewDto reviewDto) {
         log.info("리뷰 수정 {}, {}", reviewNo, reviewDto);

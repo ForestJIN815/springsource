@@ -1,5 +1,6 @@
 package com.example.movie.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.movie.dto.MovieDto;
@@ -20,8 +20,6 @@ import com.example.movie.dto.PageResultDto;
 import com.example.movie.service.MovieService;
 
 import jakarta.validation.Valid;
-
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RequiredArgsConstructor
 @Log4j2
@@ -84,6 +82,7 @@ public class MovieController {
         log.info("영화 작성 폼 요청");
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
     public String postCreate(@Valid MovieDto movieDto, BindingResult result,
             @ModelAttribute("requestDto") PageRequestDto pageRequestDto,

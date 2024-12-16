@@ -11,8 +11,6 @@ import com.example.movie.entity.Member;
 import com.example.movie.entity.Movie;
 import com.example.movie.entity.Review;
 
-import jakarta.transaction.Transactional;
-
 @SpringBootTest
 public class ReviewRepositoryTest {
 
