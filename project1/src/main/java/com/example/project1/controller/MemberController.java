@@ -31,7 +31,7 @@ public class MemberController {
     // @PostMapping("/login")
     // public void postLogin(HttpServletRequest request) {
     // log.info("login 요청 - 사용자 입력값 요청");
-
+ 
     // String userid = request.getParameter("userid");
     // String password = request.getParameter("password");
 
